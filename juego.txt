@@ -1,0 +1,99 @@
+package com.example.piedrapapelotijera
+
+import android.os.Bundle
+import android.view.View
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import java.util.*
+
+
+class MainActivity : AppCompatActivity() {
+    var btnPiedra: Button? = null
+    var btnPapel: Button? = null
+    var btnTijeras: Button? = null
+    var txtMarcador: TextView? = null
+    var ImgJugador: ImageView? = null
+    var ImgCPU: ImageView? = null
+    var JugadorPuntaje = 0
+    var CPUPuntaje = 0
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        btnPiedra = findViewById<View>(R.id.btnPiedra) as Button
+        btnPapel = findViewById<View>(R.id.btnPapel) as Button
+        btnTijeras = findViewById<View>(R.id.btnTijeras) as Button
+        txtMarcador = findViewById<View>(R.id.txtMarcador) as TextView
+        ImgJugador = findViewById<View>(R.id.ImgJugador) as ImageView
+        ImgCPU = findViewById<View>(R.id.ImgCPU) as ImageView
+        btnPiedra!!.setOnClickListener {
+            ImgJugador!!.setImageResource(R.drawable.piedra)
+            val mensaaje = turno("Piedra")
+            Toast.makeText(this@MainActivity, mensaaje, Toast.LENGTH_SHORT).show()
+            txtMarcador!!.text =
+                "Jugador: " + Integer.toString(JugadorPuntaje) + "CPU: " + Integer.toString(
+                    CPUPuntaje
+                )
+        }
+        btnPapel!!.setOnClickListener {
+            ImgJugador!!.setImageResource(R.drawable.papel)
+            val mensaaje = turno("Papel")
+            Toast.makeText(this@MainActivity, mensaaje, Toast.LENGTH_SHORT).show()
+            txtMarcador!!.text =
+                "Jugador: " + Integer.toString(JugadorPuntaje) + "CPU: " + Integer.toString(
+                    CPUPuntaje
+                )
+        }
+        btnTijeras!!.setOnClickListener {
+            ImgJugador!!.setImageResource(R.drawable.tijera)
+            val mensaaje = turno("Tijeras")
+            Toast.makeText(this@MainActivity, mensaaje, Toast.LENGTH_SHORT).show()
+            txtMarcador!!.text =
+                "Jugador: " + Integer.toString(JugadorPuntaje) + "CPU: " + Integer.toString(
+                    CPUPuntaje
+                )
+        }
+    }
+
+    fun turno(elejido: String): String {
+        var dispositivo_selecciono = " "
+        val r = Random()
+        val dispos_selecciono_numero = r.nextInt(3) + 1
+        if (dispos_selecciono_numero == 1) {
+            dispositivo_selecciono = "Piedra"
+        } else if (dispos_selecciono_numero == 2) {
+            dispositivo_selecciono = "Papel"
+        } else if (dispos_selecciono_numero == 3) {
+            dispositivo_selecciono = "Tijeras"
+        }
+        if (dispositivo_selecciono === "Piedra") {
+            ImgCPU!!.setImageResource(R.drawable.piedra)
+        } else if (dispositivo_selecciono === "Papel") {
+            ImgCPU!!.setImageResource(R.drawable.papel)
+        } else if (dispositivo_selecciono === "Tijeras") {
+            ImgCPU!!.setImageResource(R.drawable.tijera)
+        }
+        return if (dispositivo_selecciono === elejido) {
+            "Empatados"
+        } else if (elejido === "Piedra" && dispositivo_selecciono === "Tijeras") {
+            JugadorPuntaje++            "La piedra rompio las Tijeras      FELICIDADES GANASTE XD"
+        } else if (elejido === "Piedra" && dispositivo_selecciono === "Papel") {
+            CPUPuntaje++
+            "El papel cubre a la Piedra      PERDISTE xd"
+        } else if (elejido === "Tijeras" && dispositivo_selecciono === "Piedra") {
+            CPUPuntaje++
+            "La piedra rompio las Tijeras      PERDISTE xd"
+        } else if (elejido === "Tijeras" && dispositivo_selecciono === "Papel") {
+            JugadorPuntaje++
+            "Las Tijeras cortan el Papel      FELICIDADES GANASTE XD"
+        } else if (elejido === "Papel" && dispositivo_selecciono === "Piedra") {
+            JugadorPuntaje++
+            "El papel cubre a la Piedra      FELICIDADES GANASTE XD"
+        } else if (elejido === "Papel" && dispositivo_selecciono === "Tijeras") {
+            CPUPuntaje++
+            "Las tijeras cortan el Papel      PERDISTE xd"
+        } else "No seguro"
+    }
+}
